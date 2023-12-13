@@ -31,9 +31,9 @@ class EarnMob extends StatelessWidget {
         '/': (context) => const screenHome(),
         '/login': (context) => const screenLogin(),
         '/auth': (context) => const AuthPage(),
-        '/home': (context) => const screenDashBoard(),
+        '/home': (context) => const ScreenDashboard(),
       },
-      initialRoute: isFirstLaunch ? '/' : '/auth',
+      initialRoute: '/auth',
     );
   }
 }

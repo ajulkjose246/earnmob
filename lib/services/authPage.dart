@@ -1,5 +1,5 @@
 import 'package:earnmob/screens/screenDashBoard.dart';
-import 'package:earnmob/screens/screenLogin.dart';
+import 'package:earnmob/screens/screenHome.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -15,12 +15,12 @@ class AuthPage extends StatelessWidget {
           //user is loged in
           if (snapshot.hasData) {
             print("login");
-            return const screenDashBoard();
+            return const ScreenDashboard();
           }
           //user is not logged in
           else {
             print("Not login");
-            return const screenLogin();
+            return const screenHome();
           }
         },
       ),
