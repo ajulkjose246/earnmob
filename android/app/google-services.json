@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "603994659390",
+    "project_id": "earnmob-v1",
+    "storage_bucket": "earnmob-v1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:603994659390:android:b1303efb38b693d87d8f6f",
+        "android_client_info": {
+          "package_name": "com.example.earnmob"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHmkYhYXm-3LB6d4pyk_x35jqXYzzo01Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

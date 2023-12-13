@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
+// ignore: camel_case_types
 class screenHome extends StatefulWidget {
-  const screenHome({Key? key}) : super(key: key);
+  const screenHome({super.key});
 
   @override
   State<screenHome> createState() => _screenHomeState();
 }
 
+class AppConstants {
+  static double screenWidth = 0;
+  static double screenHeight = 0;
+  static double systemFS = 0;
+  static double defaultFontSize = 0;
+}
+
+// ignore: camel_case_types
 class _screenHomeState extends State<screenHome> {
   late PageController _pageController;
 
@@ -27,8 +36,20 @@ class _screenHomeState extends State<screenHome> {
 
   @override
   Widget build(BuildContext context) {
+    AppConstants.screenWidth = MediaQuery.of(context).size.width;
+    AppConstants.screenHeight = MediaQuery.of(context).size.height;
+    AppConstants.systemFS = MediaQuery.textScaleFactorOf(context);
+    // ignore: unused_local_variable
+    if (AppConstants.screenWidth < 600) {
+      AppConstants.defaultFontSize = 18 / AppConstants.systemFS;
+    } else if (AppConstants.screenWidth >= 600 &&
+        AppConstants.screenWidth < 1200) {
+      AppConstants.defaultFontSize = 20;
+    } else {
+      AppConstants.defaultFontSize = 22;
+    }
     return Scaffold(
-        backgroundColor: Color.fromRGBO(192, 0, 0, 1),
+        backgroundColor: const Color.fromRGBO(192, 0, 0, 1),
         body: SafeArea(
           child: Center(
             child: Stack(
@@ -37,7 +58,7 @@ class _screenHomeState extends State<screenHome> {
                   children: [
                     Container(
                       width: double.infinity,
-                      height: 700,
+                      height: AppConstants.screenHeight / 2 * 1.5,
                       decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius:
@@ -62,13 +83,14 @@ class _screenHomeState extends State<screenHome> {
                                     ),
                                   ),
                                   const Spacer(),
-                                  const Row(
+                                  Row(
                                     children: [
                                       Text(
                                         "Earn",
                                         style: TextStyle(
                                           fontFamily: 'Kaleko',
-                                          fontSize: 20,
+                                          fontSize:
+                                              AppConstants.defaultFontSize,
                                           color: Color.fromRGBO(192, 0, 0, 1),
                                         ),
                                       ),
@@ -76,7 +98,8 @@ class _screenHomeState extends State<screenHome> {
                                         "Mob",
                                         style: TextStyle(
                                           fontFamily: 'Kaleko',
-                                          fontSize: 20,
+                                          fontSize:
+                                              AppConstants.defaultFontSize,
                                           color: Color.fromRGBO(0, 33, 93, 1),
                                         ),
                                       ),
@@ -105,14 +128,17 @@ class _screenHomeState extends State<screenHome> {
                         ),
                       ),
                     ),
-                    const Expanded(
+                    Expanded(
                       child: Center(
-                        child: Text(
-                          "Achieve beyond the imagination!",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Kaleko',
-                            fontSize: 20,
+                        child: FittedBox(
+                          fit: BoxFit.contain,
+                          child: Text(
+                            "Achieve beyond the imagination!",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'Kaleko',
+                              fontSize: AppConstants.defaultFontSize,
+                            ),
                           ),
                         ),
                       ),
@@ -120,9 +146,11 @@ class _screenHomeState extends State<screenHome> {
                   ],
                 ),
                 Positioned(
-                  bottom: 200,
-                  right: 185,
-                  left: 185,
+                  top: (AppConstants.screenHeight / 2) +
+                      (AppConstants.screenHeight / 4) -
+                      30,
+                  right: (AppConstants.screenWidth - 75).toInt() / 2,
+                  left: (AppConstants.screenWidth - 75).toInt() / 2,
                   child: SizedBox(
                     height: 60,
                     child: ElevatedButton(
@@ -145,9 +173,16 @@ class _screenHomeState extends State<screenHome> {
                             color: Colors.white, // Set the desired border color
                             width: 3),
                       ),
-                      child: Icon(_pageIndex == demo_data.length - 1
-                          ? Icons.exit_to_app
-                          : Icons.navigate_next),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Icon(
+                          size: 30,
+                          color: Colors.white,
+                          _pageIndex == demo_data.length - 1
+                              ? Icons.exit_to_app
+                              : Icons.navigate_next,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -229,24 +264,25 @@ class OnBoardContent extends StatelessWidget {
       padding: const EdgeInsets.all(10.0),
       child: Column(
         children: [
-          const Spacer(),
-          Lottie.asset(image, height: 400, width: 400),
+          Lottie.asset(image,
+              height: AppConstants.screenHeight / 3,
+              width: AppConstants.screenHeight / 3),
           Text(
             title,
-            style: const TextStyle(
-                fontSize: 25,
+            style: TextStyle(
+                fontSize: AppConstants.defaultFontSize + 3,
                 fontWeight: FontWeight.w700,
                 color: Color.fromRGBO(192, 0, 0, 1),
                 fontFamily: 'Kaleko'),
           ),
-          const SizedBox(
-            height: 15,
+          SizedBox(
+            height: AppConstants.screenHeight * 0.015,
           ),
           Text(
             description,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 17,
+            style: TextStyle(
+              fontSize: AppConstants.defaultFontSize - 2,
               color: Color.fromRGBO(0, 33, 93, 1),
               fontFamily: 'Kaleko',
             ),
