@@ -41,6 +41,8 @@ dependencies:
   firebase_core: ^2.24.2
   shared_preferences: ^2.2.2
   google_nav_bar: ^5.0.6
+  stroke_text: ^0.0.2
+  unicons: ^2.1.1
 
 dev_dependencies:
   flutter_test:

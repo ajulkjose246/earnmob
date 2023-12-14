@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:stroke_text/stroke_text.dart';
+import 'package:unicons/unicons.dart';
 
 class ScreenDashboard extends StatefulWidget {
   const ScreenDashboard({super.key});
@@ -80,16 +82,16 @@ class _ScreenDashboardState extends State<ScreenDashboard> {
               color: Colors.white,
               tabs: const [
                 GButton(
-                  icon: Icons.home,
-                  text: 'Home',
+                  icon: Icons.campaign_outlined,
+                  text: 'Campaigns',
                 ),
                 GButton(
-                  icon: Icons.favorite,
-                  text: 'Likes',
+                  icon: UniconsLine.clipboard,
+                  text: 'Activities',
                 ),
                 GButton(
-                  icon: Icons.search,
-                  text: 'Search',
+                  icon: UniconsLine.fire,
+                  text: 'Boosters',
                 ),
                 GButton(
                   icon: Icons.person,
@@ -124,33 +126,37 @@ class mainDash extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(15),
+      padding: const EdgeInsets.only(left: 15, right: 15, top: 2, bottom: 5),
       child: Row(
         children: [
           const CircleAvatar(
             backgroundImage: AssetImage('assets/images/user.png'),
           ),
           const SizedBox(width: 10),
-          const Text(
-            "Earn",
-            style: TextStyle(
+          const StrokeText(
+            text: 'Earn',
+            textStyle: TextStyle(
               fontFamily: 'Kaleko',
-              fontSize: 18,
-              color: Color.fromRGBO(192, 0, 0, 1),
+              fontSize: 22,
+              color: Color.fromRGBO(192, 0, 0, 1), // Set the text color
             ),
+            strokeWidth: 2.0,
+            strokeColor: Colors.white, // Set the border color
           ),
-          const Text(
-            "Mob",
-            style: TextStyle(
+          const StrokeText(
+            text: 'Mob',
+            textStyle: TextStyle(
               fontFamily: 'Kaleko',
-              fontSize: 18,
-              color: Colors.white,
+              fontSize: 22,
+              color: Color.fromRGBO(0, 33, 93, 1), // Set the text color
             ),
+            strokeWidth: 2.0,
+            strokeColor: Colors.white, // Set the border color
           ),
           const Spacer(),
           Container(
             width: 70,
-            height: 40,
+            height: 30,
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(15)),
             child: const Row(
@@ -173,7 +179,7 @@ class mainDash extends StatelessWidget {
           const SizedBox(width: 10),
           Container(
             width: 70,
-            height: 40,
+            height: 30,
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(15)),
             child: const Row(
