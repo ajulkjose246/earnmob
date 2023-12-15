@@ -44,9 +44,9 @@ class _screenHomeState extends State<screenHome> {
       AppConstants.defaultFontSize = 18 / AppConstants.systemFS;
     } else if (AppConstants.screenWidth >= 600 &&
         AppConstants.screenWidth < 1200) {
-      AppConstants.defaultFontSize = 20;
+      AppConstants.defaultFontSize = 20 / AppConstants.systemFS;
     } else {
-      AppConstants.defaultFontSize = 22;
+      AppConstants.defaultFontSize = 22 / AppConstants.systemFS;
     }
     return Scaffold(
         backgroundColor: const Color.fromRGBO(192, 0, 0, 1),

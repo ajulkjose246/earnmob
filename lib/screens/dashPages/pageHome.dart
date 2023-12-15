@@ -14,10 +14,13 @@ class pageHome extends StatefulWidget {
 class _pageHomeState extends State<pageHome> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+    return Scaffold(
+      backgroundColor: const Color.fromRGBO(2, 42, 114, 1),
+      body: Container(
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      ),
     );
   }
 }

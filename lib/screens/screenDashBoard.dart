@@ -15,6 +15,14 @@ class ScreenDashboard extends StatefulWidget {
   _ScreenDashboardState createState() => _ScreenDashboardState();
 }
 
+class AppConstants {
+  static double screenWidth = 0;
+  static double screenHeight = 0;
+  static double systemFS = 0;
+  static double defaultFontSize = 0;
+  static double bottomAppBarverti = 0;
+}
+
 final user = FirebaseAuth.instance.currentUser;
 
 void userLogout() {
@@ -37,82 +45,104 @@ class _ScreenDashboardState extends State<ScreenDashboard> {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Color.fromRGBO(2, 42, 114, 1),
     ));
+
+    AppConstants.screenWidth = MediaQuery.of(context).size.width;
+    AppConstants.screenHeight = MediaQuery.of(context).size.height;
+    // ignore: deprecated_member_use
+    AppConstants.systemFS = MediaQuery.textScaleFactorOf(context);
+    // ignore: unused_local_variable
+    if (AppConstants.screenWidth < 600) {
+      AppConstants.defaultFontSize = 18 / AppConstants.systemFS;
+      print(AppConstants.screenHeight);
+    } else if (AppConstants.screenWidth >= 600 &&
+        AppConstants.screenWidth < 1200) {
+      AppConstants.defaultFontSize = 20 / AppConstants.systemFS;
+    } else {
+      AppConstants.defaultFontSize = 22 / AppConstants.systemFS;
+    }
+
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(2, 42, 114, 1),
       body: SafeArea(
-          child: Column(
-        children: [
-          const mainDash(),
-          Expanded(
-            child: PageView(
-              controller: _pageController,
-              onPageChanged: (index) {
-                setState(() {
-                  _selectedIndex = index;
-                });
-              },
-              children: homePages,
+        child: Column(
+          children: [
+            const mainDash(),
+            Expanded(
+              child: PageView(
+                controller: _pageController,
+                onPageChanged: (index) {
+                  setState(() {
+                    _selectedIndex = index;
+                  });
+                },
+                children: homePages,
+              ),
             ),
-          ),
-        ],
-      )),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(25)),
-          color: const Color.fromRGBO(2, 42, 114, 1),
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 20,
-              color: Colors.black.withOpacity(.1),
-            )
           ],
         ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
-            child: GNav(
-              rippleColor: Colors.grey[300]!,
-              hoverColor: Colors.grey[100]!,
-              gap: 8,
-              activeColor: Colors.black,
-              iconSize: 24,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              duration: const Duration(milliseconds: 400),
-              tabBackgroundColor: Colors.grey[100]!,
-              color: Colors.white,
-              tabs: const [
-                GButton(
-                  icon: Icons.campaign_outlined,
-                  text: 'Campaigns',
-                ),
-                GButton(
-                  icon: UniconsLine.clipboard,
-                  text: 'Activities',
-                ),
-                GButton(
-                  icon: UniconsLine.fire,
-                  text: 'Boosters',
-                ),
-                GButton(
-                  icon: Icons.person,
-                  text: 'Profile',
-                ),
-              ],
-              selectedIndex: _selectedIndex,
-              onTabChange: (index) {
-                setState(() {
-                  _selectedIndex = index;
-                  _pageController.animateToPage(
-                    index,
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeInOut,
-                  );
-                });
-              },
-            ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        height: 60,
+        shape: const CircularNotchedRectangle(),
+        color: const Color.fromRGBO(2, 42, 114, 1),
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: 15.0,
+              vertical: (1800 / AppConstants.screenWidth) + 1),
+          child: GNav(
+            rippleColor: Colors.grey[300]!,
+            hoverColor: Colors.grey[100]!,
+            activeColor: Colors.black,
+            iconSize: 24,
+            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+            duration: const Duration(milliseconds: 400),
+            tabBackgroundColor: Colors.grey[100]!,
+            color: Colors.white,
+            tabs: const [
+              GButton(
+                icon: Icons.campaign_outlined,
+                text: 'Campaigns',
+              ),
+              GButton(
+                icon: UniconsLine.clipboard,
+                text: 'Activities',
+                margin: EdgeInsets.only(right: 50),
+              ),
+              GButton(
+                icon: UniconsLine.fire,
+                text: 'Boosters',
+                margin: EdgeInsets.only(left: 50),
+              ),
+              GButton(
+                icon: Icons.person,
+                text: 'Profile',
+              ),
+            ],
+            selectedIndex: _selectedIndex,
+            onTabChange: (index) {
+              setState(() {
+                _selectedIndex = index;
+                _pageController.animateToPage(
+                  index,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeInOut,
+                );
+              });
+            },
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Handle FAB press
+        },
+        shape: const CircleBorder(),
+        backgroundColor: const Color.fromRGBO(2, 42, 114, 1),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }
@@ -125,81 +155,129 @@ class mainDash extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 15, right: 15, top: 2, bottom: 5),
-      child: Row(
-        children: [
-          const CircleAvatar(
-            backgroundImage: AssetImage('assets/images/user.png'),
-          ),
-          const SizedBox(width: 10),
-          const StrokeText(
-            text: 'Earn',
-            textStyle: TextStyle(
-              fontFamily: 'Kaleko',
-              fontSize: 22,
-              color: Color.fromRGBO(192, 0, 0, 1), // Set the text color
+    return Container(
+      decoration: const BoxDecoration(
+        color: Color.fromRGBO(2, 42, 114, 1),
+        // borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 15, right: 15, top: 2, bottom: 5),
+        child: Row(
+          children: [
+            const CircleAvatar(
+              backgroundImage: AssetImage('assets/images/user.png'),
             ),
-            strokeWidth: 2.0,
-            strokeColor: Colors.white, // Set the border color
-          ),
-          const StrokeText(
-            text: 'Mob',
-            textStyle: TextStyle(
-              fontFamily: 'Kaleko',
-              fontSize: 22,
-              color: Color.fromRGBO(0, 33, 93, 1), // Set the text color
+            const SizedBox(width: 10),
+            StrokeText(
+              text: 'Earn',
+              textStyle: TextStyle(
+                fontFamily: 'Kaleko',
+                fontSize: AppConstants.defaultFontSize,
+                color: const Color.fromRGBO(192, 0, 0, 1), // Set the text color
+              ),
+              strokeWidth: 2.0,
+              strokeColor: Colors.white, // Set the border color
             ),
-            strokeWidth: 2.0,
-            strokeColor: Colors.white, // Set the border color
-          ),
-          const Spacer(),
-          Container(
-            width: 70,
-            height: 30,
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(15)),
-            child: const Row(
+            StrokeText(
+              text: 'Mob',
+              textStyle: TextStyle(
+                fontFamily: 'Kaleko',
+                fontSize: AppConstants.defaultFontSize,
+                color: const Color.fromRGBO(0, 33, 93, 1), // Set the text color
+              ),
+              strokeWidth: 2.0,
+              strokeColor: Colors.white, // Set the border color
+            ),
+            const Spacer(),
+            Column(
               children: [
-                Spacer(),
-                Icon(Icons.wallet),
-                Spacer(),
-                Text(
-                  "500",
-                  style: TextStyle(
-                    fontFamily: 'Kaleko',
-                    fontSize: 18,
-                    color: Colors.black,
-                  ),
+                Row(
+                  children: [
+                    Container(
+                      width: 65,
+                      height: 17,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(5)),
+                      child: Row(
+                        children: [
+                          const Spacer(),
+                          Icon(
+                            Icons.wallet,
+                            size: AppConstants.defaultFontSize - 2.5,
+                          ),
+                          const Spacer(),
+                          Text(
+                            "99999",
+                            style: TextStyle(
+                              fontFamily: 'Kaleko',
+                              fontSize: AppConstants.defaultFontSize - 6,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const Spacer()
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Container(
+                      width: 65,
+                      height: 17,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(5)),
+                      child: Row(
+                        children: [
+                          const Spacer(),
+                          Icon(
+                            Icons.diamond,
+                            size: AppConstants.defaultFontSize - 2.5,
+                          ),
+                          const Spacer(),
+                          Text(
+                            "99999",
+                            style: TextStyle(
+                              fontFamily: 'Kaleko',
+                              fontSize: AppConstants.defaultFontSize - 6,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const Spacer()
+                        ],
+                      ),
+                    )
+                  ],
                 ),
-                Spacer()
-              ],
-            ),
-          ),
-          const SizedBox(width: 10),
-          Container(
-            width: 70,
-            height: 30,
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(15)),
-            child: const Row(
-              children: [
-                Spacer(),
-                Icon(Icons.diamond),
-                Spacer(),
-                Text(
-                  "500",
-                  style: TextStyle(
-                    fontFamily: 'Kaleko',
-                    fontSize: 18,
-                    color: Colors.black,
-                  ),
+                const SizedBox(
+                  height: 5,
                 ),
-                Spacer()
+                Row(
+                  children: [
+                    Container(
+                        width: 65,
+                        height: 17,
+                        decoration: BoxDecoration(
+                            color: const Color.fromRGBO(192, 0, 0, 1),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Column(
+                          children: [
+                            const Spacer(),
+                            Text(
+                              "Basic",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'Kaleko',
+                                  fontSize: AppConstants.defaultFontSize - 7),
+                            ),
+                            const Spacer()
+                          ],
+                        ))
+                  ],
+                )
               ],
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
