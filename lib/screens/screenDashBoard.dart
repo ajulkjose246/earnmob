@@ -1,5 +1,5 @@
 // ignore_for_file: file_names
-import 'package:earnmob/screens/dashPages/pageHome.dart';
+import 'package:earnmob/screens/dashPages/pageCampaigns.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -33,7 +33,7 @@ int _selectedIndex = 0;
 PageController _pageController = PageController();
 
 const List<Widget> homePages = <Widget>[
-  pageHome(),
+  pageCampaigns(),
   Center(child: Text('Likess')),
   Center(child: Text('Search')),
   Center(child: Text('Profile')),
